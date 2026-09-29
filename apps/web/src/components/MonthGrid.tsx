@@ -13,6 +13,7 @@ import {
   type SkyEvent,
 } from "@sbcal/core";
 import { useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { duration, localWhen } from "../lib/time";
 import { PixelIcon } from "./PixelIcon";
 
@@ -183,7 +184,8 @@ function DayTooltip({
 
   const dayStart = fromSkyDate(year, month, day);
 
-  return (
+  // Portalled so no transformed/filtered ancestor can hijack `position: fixed`.
+  return createPortal(
     <div
       ref={ref}
       role="tooltip"
@@ -214,6 +216,7 @@ function DayTooltip({
           );
         })}
       </ul>
-    </div>
+    </div>,
+    document.body,
   );
 }
